@@ -1,0 +1,18 @@
+#container {
+  border: 1px solid lightgray;
+  width: 275px;
+  max-height: 241px;
+}
+
+.tile {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding-left: 10%;
+  height: 60px;
+  width: 275px;
+}
+
+.tile:hover {
+  cursor: pointer;
+}

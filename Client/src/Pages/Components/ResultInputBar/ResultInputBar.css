@@ -1,0 +1,27 @@
+#resultSearch {
+  margin: 1% 0px 0px 3%;
+  width: 49%;
+  min-width: 640px;
+}
+
+.resultInput {
+  padding: 22px;
+  border-radius: 0px;
+  border: 1px solid black;
+}
+
+#resultButton {
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+  border-radius: 0px;
+}
+
+#resultButton:hover {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+
+

@@ -1,0 +1,14 @@
+#resultHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 1280px;
+  margin-top: 1.1%;
+}
+
+#resultPageNav {
+  display: flex;
+  justify-content: flex-end;
+  width: 40%;
+  min-width: 450px;
+}

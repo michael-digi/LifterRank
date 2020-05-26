@@ -1,0 +1,36 @@
+#chooseGymsContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid lightgray;
+}
+
+.chooseGymsButton {
+  font-weight: bold;
+  letter-spacing: 1px;
+  width: 120px;
+  height: 40px;
+  background-color: #357eb4;
+  border: none;
+  border-radius: 5px;
+}
+#chooseGymsHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  width: 75%;
+}
+
+#chooseGymsButtons {
+  width: 45%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  margin-bottom: 1%;
+}
+
+#chooseGymsBody {
+  width: 75%;
+  margin-top: 30px;
+}

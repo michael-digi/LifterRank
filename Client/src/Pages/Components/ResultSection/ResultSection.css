@@ -1,0 +1,8 @@
+#resultContainer {
+  display: flex;
+  flex-direction: column;
+  width: 38%;
+  min-width: 550px;
+  margin-left: 40px;
+  margin-right: 40px;
+}

@@ -1,0 +1,16 @@
+#sketch1 {
+  display: flex;
+  margin-left: 15%;
+  width: 475px;
+  height: 550px;
+  z-index: -1;
+}
+
+/* #landingImage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 40%;
+} */
+
+

@@ -1,0 +1,14 @@
+#dashboard {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  min-width: 1100px;
+  margin: 5% 0% 0% 10%;
+}
+
+#dashboardNav {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 1100px;
+  margin: 2% 8%;
+}

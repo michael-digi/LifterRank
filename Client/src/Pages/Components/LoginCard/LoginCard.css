@@ -1,0 +1,56 @@
+#loginCard {
+  display: flex;
+  align-items: center;
+  width: 30%;
+  height: 450px;
+
+  box-shadow: 0px 4px 7px -2px rgba(0, 0, 0, 0.4);
+}
+
+#loginForm {
+  margin-top: 5%;
+  width: 80%;
+}
+
+#loginCardHeader {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  margin-top: 7%;
+}
+
+#buttonSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.memberToggleButtons {
+  font-size: 16px;
+  max-height: 40px;
+  background-color: black;
+  border: 1px solid black;
+  width:40%;
+}
+
+#loginForm #inputSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.loginInput {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px lightgray solid;
+}
+
+#loginForm #submitButton {
+  background-color: black;
+  color: white;
+  margin-top: 18%;
+  font-weight: bold;
+  letter-spacing: 1px;
+}

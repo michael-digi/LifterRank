@@ -1,0 +1,8 @@
+#sketch2 {
+  display: flex;
+  margin-left: 8%;
+
+  width: 42%;
+  height: 425px;
+  z-index: -1;
+}

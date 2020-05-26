@@ -1,0 +1,10 @@
+#resultHeader {
+  display: flex;
+  flex-direction: row;
+}
+
+#resultBody {
+  display: flex;
+  flex-direction: row;
+  margin-top: 8%;
+}

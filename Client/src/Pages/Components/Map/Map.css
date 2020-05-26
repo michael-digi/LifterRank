@@ -1,0 +1,7 @@
+#loadingContainer { 
+  width: 51%;
+  height: 90%;
+  min-width: 600px;
+  min-height: 450px;
+  margin-left: 20px
+}
