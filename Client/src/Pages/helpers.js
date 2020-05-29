@@ -46,10 +46,10 @@ export const makeCards = (gyms, coords) => {
   let cards = []
   let photoUrl;
   gyms.slice(0, 10).map(place => {
-    console.log(typeof place.geometry.location.lat, ' this is jbjhbfjhebfkjebfkjebrfjkebrfjkb')
     place.photos 
     ? photoUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=215&maxheight=215&photoreference=${place.photos[0].photo_reference}&key=${process.env.REACT_APP_GOOGLE}`
     : photoUrl = 'https://banner2.cleanpng.com/20180605/fia/kisspng-barbell-dumbbell-weight-training-physical-fitness-dumbbell-5b16616f58d006.4342646415281933913638.jpg'
+    console.log(photoUrl, ' photourl')
     let distance = (haversine(coords, place.geometry.location) / 1609)
     cards.push(
       <ResultCard 
@@ -65,6 +65,8 @@ export const makeCards = (gyms, coords) => {
   })
   return cards
 }
+
+
 
 export const makeDashboardCards = (gyms, coords) => {
   let cards = []
@@ -160,7 +162,7 @@ export const loadMap = (props = {}, styles = {}, markers = []) => {
         style={{
           width: "100%", 
           height: "100%", 
-          border: "1px solid black",
+          border: "1px solid lightgrey",
           borderRadius: '5px'
         }}
         zoom = {11}

@@ -6,7 +6,7 @@ function EmptyCard(props) {
   return (
     <Card className="resultCard" id="emptyCard">
       <div id = "resultCardBody">
-        <div id = "resultCardImage" style={{border: '1px solid black'}}>
+        <div id = "resultCardImage" style={{border: '1px solid lightgray'}}>
         
         </div>
         <div id = "resultCardContent">

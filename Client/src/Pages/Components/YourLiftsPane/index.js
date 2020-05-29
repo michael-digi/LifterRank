@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { makeDashboardCards, usePosition } from '../../helpers';
-import { useSelector } from 'react-redux';
+import { showModalChooseLift } from '../../../actions';
+import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import ChooseGymModal from '../ChooseGymModal';
-import ConfirmGymModal from '../ConfirmGymModal';
+import YourLiftsModal from '../YourLiftsModal';
+
 import axios from 'axios';
 import './YourLiftsPane.css';
 
 function ChooseYourGymsPane() {
-  const [ searchGymModal, setModal ] = useState(false)
   const [ cards, setCards ] = useState([])
-  const showConfirmModal = useSelector(state => state.gymModal.modal)
   const userCoords = usePosition()
+  const chooseLiftsModal = useSelector(state => state.liftsModal.chooseLiftsModal)
+  const dispatch = useDispatch()
 
-  useEffect(() => {
-    async function getUsersMemberships() {
-      let response = await axios.get('/getUsersMemberships')
-      let cards = makeDashboardCards(response.data, userCoords)
-      setCards(cards)
-    }
-    getUsersMemberships()
-  }, [])
+  // useEffect(() => {
+  //   async function getUsersMemberships() {
+  //     let response = await axios.get('/getUsersMemberships')
+  //     let cards = makeDashboardCards(response.data, userCoords)
+  //     setCards(cards)
+  //   }
+  //   getUsersMemberships()
+  // }, [])
 
-  
   const handleShow = () => {
-    setModal(true)
-  }
-
-  const handleClose = () => {
-    setModal(false)
+    dispatch(showModalChooseLift(true))
   }
 
   return (
@@ -48,15 +44,9 @@ function ChooseYourGymsPane() {
           <Button 
             className = 'chooseGymsButton navButton shadow-none'> Delete </Button>
         </div>
-        {showConfirmModal 
-         ? <ConfirmGymModal 
-             show = {showConfirmModal} />
-         : <ChooseGymModal 
-             handleShow = {handleShow}
-             handleClose = {handleClose}
-             show = {searchGymModal}
-             type = 'lifts' /> }
       </div>
+      <YourLiftsModal
+          show = {chooseLiftsModal} />
     </div>
   )
 }

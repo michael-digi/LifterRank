@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { showModalConfirm, setModalData } from '../../../actions';
+import { showModalConfirmGym, showModalChooseGym, setModalGymData } from '../../../actions';
 import { Card } from 'react-bootstrap';
 import reviews from './images/reviews.png';
 import './ModalResultCard.css';
@@ -8,13 +8,13 @@ import './ModalResultCard.css';
 function ModalResultCard(props) {
   const dispatch = useDispatch()
   return (
-    <Card className="modalResultCard" 
+    <Card 
+      className="modalResultCard" 
       onClick={() =>  {
-        dispatch(showModalConfirm(true))
-        dispatch(setModalData(props))
-      }
-    }
-    >
+        dispatch(showModalConfirmGym(true))
+        dispatch(showModalChooseGym(false))
+        dispatch(setModalGymData(props))
+      }} >
       <div id = "modalResultCardBody">
         <div id = "modalResultCardImage">
           <img src = {props.img}  alt = "gym profile" style={{width: '100%', height: '100%'}}/>

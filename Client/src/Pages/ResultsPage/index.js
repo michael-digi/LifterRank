@@ -29,6 +29,7 @@ function ResultsPage() {
       searchNearby(position.coords.lat, position.coords.lng)
         .then(result => {
           console.log('fak, the endpoint got hit')
+          console.log(result)
           localStorage.setItem(
             JSON.stringify(
               _.round(position.coords.lat, 3),

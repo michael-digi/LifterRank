@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { showModalConfirm } from '../../../actions';
+import { showModalConfirmGym, showModalChooseGym, newGymAdded } from '../../../actions';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
@@ -13,7 +13,10 @@ function ConfirmGymModal(props) {
     axios.post('/addGymMember', {
       gymData: confirmGymData
     }).then(response => {
-      if (response.data.user_id) window.location.reload()
+      if (response.data.user_id) {
+        dispatch(newGymAdded(true))
+        closeAll()
+      }
     })
   }
 
@@ -23,7 +26,13 @@ function ConfirmGymModal(props) {
   }
 
   const close = () => {
-    dispatch(showModalConfirm(false))
+    dispatch(showModalConfirmGym(false))
+    dispatch(showModalChooseGym(true))
+  }
+
+  const closeAll = () => {
+    dispatch(showModalConfirmGym(false))
+    dispatch(showModalChooseGym(false))
   }
 
   return (

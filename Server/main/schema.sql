@@ -54,6 +54,7 @@ CREATE TABLE gym_members(
 
 CREATE TABLE lifter_stats(
   user_id INTEGER NOT NULL,
+  user_uuid UUID NOT NULL,
   exercise_id INTEGER NOT NULL,
   reps INTEGER NOT NULL,
   weight INTEGER NOT NULL,
@@ -71,7 +72,8 @@ CREATE TABLE gym_equipment(
 INSERT INTO exercises VALUES (DEFAULT, 'Snatch', 'Snatch',  NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Clean and Jerk', 'Clean and Jerk', NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Jerk', 'Jerk', NOW());
-INSERT INTO exercises VALUES (DEFAULT, 'Squat', 'Squat', NOW());
+INSERT INTO exercises VALUES (DEFAULT, 'Back Squat', 'Squat', NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Deadlift', 'Pull', NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Bench Press', 'Bench Press', NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Front Squat', 'Squat', NOW());
+INSERT INTO exercises VALUES (DEFAULT, 'Snatch', 'Floating Snatch', NOW());

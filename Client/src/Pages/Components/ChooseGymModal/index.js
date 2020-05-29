@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { showModalChooseGym } from '../../../actions';
 import { makeModalCards } from '../../helpers';
 import axios from 'axios';
 
@@ -10,6 +11,7 @@ function ChooseGymModal(props) {
   const [results, setResults] = useState([])
   const [cards, setCards] = useState([])
   const userCoords = useSelector(state => state.currentLocationInfo.coords)
+  const dispatch = useDispatch()
 
   const handleChange = e => {
     console.log(e.target.value)
@@ -29,7 +31,7 @@ function ChooseGymModal(props) {
     setGym('')
     setResults([])
     setCards([])
-    props.handleClose()
+    dispatch(showModalChooseGym(false))
   }
 
   useEffect(() => {

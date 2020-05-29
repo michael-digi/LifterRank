@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { makeDashboardCards, usePosition } from '../../helpers';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import { showModalChooseGym } from '../../../actions';
 import ChooseGymModal from '../ChooseGymModal';
 import ConfirmGymModal from '../ConfirmGymModal';
 import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
 import './ChooseYourGymsPane.css';
 
 function ChooseYourGymsPane() {
-  const [ searchGymModal, setModal ] = useState(false)
   const [ cards, setCards ] = useState([])
-  const showConfirmModal = useSelector(state => state.gymModal.modal)
+  const confirmGymModal = useSelector(state => state.gymModal.confirmGymModal)
+  const chooseGymModal = useSelector(state => state.gymModal.chooseGymModal)
+  const newGym = useSelector(state => state.gymModal.newGym)
   const userCoords = usePosition()
+  const dispatch = useDispatch()
+
+  console.log(chooseGymModal, ' this is yea')
 
   useEffect(() => {
     async function getUsersMemberships() {
@@ -20,15 +26,10 @@ function ChooseYourGymsPane() {
       setCards(cards)
     }
     getUsersMemberships()
-  }, [])
+  }, [newGym])
 
-  
   const handleShow = () => {
-    setModal(true)
-  }
-
-  const handleClose = () => {
-    setModal(false)
+    dispatch(showModalChooseGym(true))
   }
 
   return (
@@ -46,17 +47,14 @@ function ChooseYourGymsPane() {
           <Button 
             className = 'chooseGymsButton navButton shadow-none'> Delete </Button>
         </div>
-        {showConfirmModal 
-         ? <ConfirmGymModal 
-             show = {showConfirmModal}/>
-         : <ChooseGymModal 
-             handleShow = {handleShow}
-             handleClose = {handleClose}
-             show = {searchGymModal}/> }
       </div>
       <div id = "chooseGymsBody">
         {cards}
       </div>
+      <ConfirmGymModal 
+            show = {confirmGymModal}/>
+          <ChooseGymModal 
+            show = {chooseGymModal}/> 
     </div>
   )
 }

@@ -4,7 +4,9 @@
   flex-direction: column;
   width: 100%;
   border: 1px solid lightgray;
+
 }
+
 
 .chooseGymsButton {
   font-weight: bold;
@@ -17,7 +19,7 @@
 }
 #chooseGymsHeader {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin-top: 30px;
   width: 75%;
 }
@@ -33,4 +35,21 @@
 #chooseGymsBody {
   width: 75%;
   margin-top: 30px;
+  -webkit-animation: bouncein .6s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: bouncein .5s; /* Firefox < 16 */
+        -ms-animation: bouncein .5s; /* Internet Explorer */
+         -o-animation: bouncein .5s; /* Opera < 12.1 */
+            animation: bouncein .6s;
+}
+
+@keyframes bouncein {
+  0% {
+    transform: scale(.9) 
+  }
+  50% {
+    transform: scale(0.6) 
+  }
+  100% {
+    transform: scale(1) 
+  }
 }

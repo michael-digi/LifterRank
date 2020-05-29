@@ -22,8 +22,10 @@ searchNearby = async (req, res, next) => {
 			location: lat + ',' + lng
 		}
 	})  
+	console.log(response.data.results)
 	return res.send(response.data.results)
 }
+
 
 searchByText = async (req, res, next) => {
 	console.log(req.body)
@@ -34,6 +36,7 @@ searchByText = async (req, res, next) => {
 			type: 'gym'
 		}
 	})
+	console.log(search.data)
 	return res.send(search.data.results)
 }
 
@@ -183,6 +186,36 @@ addGymMember = async (req, res) => {
 	}
 }
 
+getLiftTypes = async (req, res) => {
+	const types = await pool.query(queries.getLiftTypes)
+	let response = types.rows.map(type => {
+		return type.exercise_type
+	})
+	return res.send(response)
+}
+
+getExercisesFromType = async (req, res) => {
+	console.log(req.query)
+	let exercises = await pool.query(queries.getExercisesFromType, [req.query.exercise])
+	console.log(exercises.rows)
+	let response = exercises.rows.map(exercise => {
+		return exercise.exercise_name
+	})
+	return res.send(response)
+}
+
+addNewPr = async (req, res) => {
+	const { uuid } = req.user
+	const { reps, weight, exercise } = req.body.PR
+	let getExercise = await pool.query(queries.getExerciseFromName, [exercise])
+	let user = await pool.query(queries.selectOneUserByUUID, [uuid])
+	const { exercise_id } = getExercise.rows[0]
+	const { user_id } = user.rows[0]
+	let newPr = await pool.query(queries.addNewPr, [user_id, uuid, exercise_id, reps, weight])
+	console.log(exercise.rows)
+	console.log(user.rows)
+	console.log(newPr.rows, ' yea')
+}
 
 router.post('/addGymMember', checkToken, addGymMember)
 	
@@ -203,5 +236,11 @@ router.get('/verifyToken', checkToken, sendUser)
 router.get('/getUsersMemberships', checkToken, getUsersGymMemberships)
 
 router.get('/selectUser', checkToken, selectUser)
+
+router.get('/getLiftTypes', getLiftTypes)
+
+router.get('/getExercisesFromType', getExercisesFromType)
+
+router.post('/addNewPr', checkToken, addNewPr)
 
 module.exports = router

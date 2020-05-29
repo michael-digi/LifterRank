@@ -8,9 +8,26 @@
   min-height: 195px;
   margin-bottom: 20px;
   border-radius: 5px;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
   box-shadow: 0px 4px 7px -2px rgba(0, 0, 0, 0.4);
   transition: all .25s ease-in-out;
+  -webkit-animation: bounce .4s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: bounce .5s; /* Firefox < 16 */
+        -ms-animation: bounce .5s; /* Internet Explorer */
+         -o-animation: bounce .5s; /* Opera < 12.1 */
+            animation: bounce .4s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1) 
+  }
+  50% {
+    transform: scale(.7) 
+  }
+  100% {
+    transform: scale(1) 
+  }
 }
 
 .resultCard:hover {
@@ -68,7 +85,7 @@
 .sportTagButton {
   background-color: white;
   color: black;
-  border: 1px solid gray;
+  border: 1px solid lightgrey;
   font-size: .65rem;
   font-weight: bold;
 }
@@ -79,8 +96,9 @@
 }
 
 #emptyCard {
-  -webkit-animation: fadeinout 2s linear forwards;
-  animation: fadeinout 2s linear 3 forwards;
+  border: 1px solid lightgray;
+  -webkit-animation: fadeinout 2s linear infinite forwards;
+  animation: fadeinout 2s linear infinite forwards;
   opacity: 0;
 }
 

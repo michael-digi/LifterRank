@@ -7,20 +7,21 @@
 .resultInput {
   padding: 22px;
   border-radius: 0px;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
 }
 
 #resultButton {
   background-color: black;
   color: white;
   border: 1px solid black;
-  border-radius: 0px;
+  border-radius: 0px 5px 5px 0px;
 }
 
 #resultButton:hover {
   background-color: white;
   color: black;
-  border: 1px solid black;
+  border: 1px solid lightgrey;
 }
 
 

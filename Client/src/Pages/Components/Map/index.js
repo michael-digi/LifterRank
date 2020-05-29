@@ -10,7 +10,6 @@ import './Map.css';
 class MapContainer extends React.Component {
 
   render() {
-    console.log(process.env)
     if (this.props.gymInfo.cards.length === 0) 
       return 'LOADING'
     let markers = createMarkers(this.props.gymInfo.gyms, this.props.google)

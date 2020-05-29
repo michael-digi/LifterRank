@@ -6,8 +6,14 @@ import {
   SET_USER_INFO,
   SET_USER_TOKEN_STATUS,
   SET_DASHBOARD_PANE,
-  SHOW_MODAL_CONFIRM,
-  SET_MODAL_DATA } from './types';
+  SHOW_MODAL_CHOOSE_GYM,
+  SHOW_MODAL_CONFIRM_GYM,
+  SET_MODAL_GYM_DATA,
+  SHOW_MODAL_CHOOSE_LIFT, 
+  SHOW_MODAL_CONFIRM_LIFT,
+  SET_MODAL_LIFT_DATA, 
+  NEW_GYM_ADDED
+  } from './types';
 
 export const setCurrentUserLocation = coords => {
   return {
@@ -58,16 +64,51 @@ export const setDashboardPane = pane => {
   }
 }
 
-export const showModalConfirm = show => {
+export const showModalChooseGym = show => {
   return {
-    type: SHOW_MODAL_CONFIRM,
+    type: SHOW_MODAL_CHOOSE_GYM, 
     payload: show
   }
 }
 
-export const setModalData = data => {
+export const showModalConfirmGym = show => {
   return {
-    type: SET_MODAL_DATA,
+    type: SHOW_MODAL_CONFIRM_GYM,
+    payload: show
+  }
+}
+
+export const setModalGymData = data => {
+  return {
+    type: SET_MODAL_GYM_DATA,
+    payload: data
+  }
+}
+
+export const newGymAdded = event => {
+  return {
+    type: NEW_GYM_ADDED,
+    payload: event
+  }
+}
+
+export const showModalChooseLift = show => {
+  return {
+    type: SHOW_MODAL_CHOOSE_LIFT,
+    payload: show
+  }
+}
+
+export const showModalConfirmLift = show => {
+  return {
+    type: SHOW_MODAL_CONFIRM_LIFT,
+    payload: show
+  }
+}
+
+export const setModalLiftData = data => {
+  return {
+    type: SET_MODAL_LIFT_DATA,
     payload: data
   }
 }
