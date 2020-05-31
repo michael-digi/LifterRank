@@ -14,7 +14,7 @@ function ConfirmGymModal(props) {
       gymData: confirmGymData
     }).then(response => {
       if (response.data.user_id) {
-        dispatch(newGymAdded(true))
+        dispatch(newGymAdded())
         closeAll()
       }
     })

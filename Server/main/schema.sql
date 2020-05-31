@@ -72,8 +72,8 @@ CREATE TABLE gym_equipment(
 INSERT INTO exercises VALUES (DEFAULT, 'Snatch', 'Snatch',  NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Clean and Jerk', 'Clean and Jerk', NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Jerk', 'Jerk', NOW());
-INSERT INTO exercises VALUES (DEFAULT, 'Back Squat', 'Squat', NOW());
-INSERT INTO exercises VALUES (DEFAULT, 'Deadlift', 'Pull', NOW());
+INSERT INTO exercises VALUES (DEFAULT, 'Squat', 'Squat', NOW());
+INSERT INTO exercises VALUES (DEFAULT, 'Deadlift', 'Deadlift', NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Bench Press', 'Bench Press', NOW());
 INSERT INTO exercises VALUES (DEFAULT, 'Front Squat', 'Squat', NOW());
-INSERT INTO exercises VALUES (DEFAULT, 'Snatch', 'Floating Snatch', NOW());
+INSERT INTO exercises VALUES (DEFAULT, 'Floating Snatch', 'Snatch', NOW());

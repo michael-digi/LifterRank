@@ -12,8 +12,8 @@ import {
   SHOW_MODAL_CHOOSE_LIFT, 
   SHOW_MODAL_CONFIRM_LIFT,
   SET_MODAL_LIFT_DATA, 
-  NEW_GYM_ADDED
-  } from './types';
+  NEW_GYM_ADDED,
+  NEW_PR_ADDED } from './types';
 
 export const setCurrentUserLocation = coords => {
   return {
@@ -110,5 +110,12 @@ export const setModalLiftData = data => {
   return {
     type: SET_MODAL_LIFT_DATA,
     payload: data
+  }
+}
+
+export const newPrAdded = event => {
+  return {
+    type: NEW_PR_ADDED,
+    payload: event
   }
 }

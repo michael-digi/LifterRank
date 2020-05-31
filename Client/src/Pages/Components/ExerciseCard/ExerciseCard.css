@@ -1,0 +1,84 @@
+.exerciseCard {
+  width: 100%;
+  border: none;
+  margin-bottom: 30px;
+  -webkit-animation: bounce .4s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: bounce .5s; /* Firefox < 16 */
+        -ms-animation: bounce .5s; /* Internet Explorer */
+         -o-animation: bounce .5s; /* Opera < 12.1 */
+            animation: bounce .4s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: scale(1) 
+  }
+  50% {
+    transform: scale(.7) 
+  }
+  100% {
+    transform: scale(1) 
+  }
+}
+
+#exerciseCardHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#exerciseName {
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  margin-left: 10px;
+}
+
+#exerciseButtonContainer {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  justify-content: space-between;
+}
+
+.editExerciseButton {
+  background-color: #357eb4;
+  color: white;
+  font-size: .8rem;
+  font-weight: bold;
+  padding: 6px 20px;
+  border: none;
+}
+
+#exerciseCardBody {
+  width: 100%;
+}
+
+#tableHeader {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-bottom: 2px solid lightgray;
+  margin-top: 8px;
+}
+
+.colTitle {
+  font-size: 1.3rem;
+  width: 20%;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-left: 10px;
+}
+
+#row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.rowCell {
+  width: 20%;
+  margin-left: 10px;
+  font-size: 1.1rem;
+}

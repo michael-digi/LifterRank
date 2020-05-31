@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ResultCard from './Components/ResultCard';
 import ModalResultCard from './Components/ModalResultCard';
+import ExerciseCard from './Components/ExerciseCard';
+import ExerciseCardRow from './Components/ExerciseCardRow';
 import { Map, Marker } from 'google-maps-react';
 import axios from 'axios';
 import _ from 'lodash';
@@ -97,6 +99,40 @@ export const makeDashboardCards = (gyms, coords) => {
   return cards
 }
 
+export const makeExerciseCard = (exercises) => {
+  let cards = []
+  exercises.map(exercise => {
+    let exerciseName = Object.keys(exercise)[0]
+    cards.push(
+      <ExerciseCard
+        exerciseName = {exerciseName}
+        key = {exerciseName}
+        prArray = {exercise[exerciseName]}/>
+    )
+  }) 
+  return cards
+}
+
+export const makeExerciseRows = (rows) => {
+  let cards = []
+  let date;
+  rows.map(row => {
+    date = row.date_lifted.split('T')[0]
+    let key = row.exercise_id + row.weight + row.reps
+    cards.push(
+      <ExerciseCardRow
+        exerciseId = {row.exercise_id}
+        exerciseType = {row.exercise_type}
+        exerciseName = {row.exercise_name}
+        weight = {row.weight}
+        reps = {row.reps}
+        dateLifted = {date}
+        key = {key} />
+    )
+  })
+  console.log(cards, ' heres cards')
+  return cards
+}
 
 export const makeModalCards = (gyms, coords) => {
   let cards = []

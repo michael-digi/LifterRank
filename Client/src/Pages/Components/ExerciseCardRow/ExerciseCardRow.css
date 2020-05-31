@@ -1,0 +1,12 @@
+#row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.rowCell {
+  width: 20%;
+  margin-left: 10px;
+  font-size: 1.1rem;
+}

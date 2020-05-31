@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { makeDashboardCards, usePosition } from '../../helpers';
+import { makeExerciseCard } from '../../helpers';
 import { showModalChooseLift } from '../../../actions';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import YourLiftsModal from '../YourLiftsModal';
+import ExerciseCard from '../ExerciseCard';
 
 import axios from 'axios';
 import './YourLiftsPane.css';
 
-function ChooseYourGymsPane() {
+function YourLiftsPane() {
   const [ cards, setCards ] = useState([])
-  const userCoords = usePosition()
   const chooseLiftsModal = useSelector(state => state.liftsModal.chooseLiftsModal)
+  const newPr = useSelector(state => state.liftsModal.newPr)
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   async function getUsersMemberships() {
-  //     let response = await axios.get('/getUsersMemberships')
-  //     let cards = makeDashboardCards(response.data, userCoords)
-  //     setCards(cards)
-  //   }
-  //   getUsersMemberships()
-  // }, [])
+  useEffect(() => {
+    async function getUsersPrs() {
+      let response = await axios.get('/getUserPrs')
+      let cards = makeExerciseCard(response.data)
+      console.log(cards, ' cards')
+      setCards(cards)
+    }
+    getUsersPrs()
+  }, [newPr])
 
   const handleShow = () => {
     dispatch(showModalChooseLift(true))
@@ -45,10 +47,13 @@ function ChooseYourGymsPane() {
             className = 'chooseGymsButton navButton shadow-none'> Delete </Button>
         </div>
       </div>
+      <div id="yourLiftsBody" >
+        {cards}
+      </div>
       <YourLiftsModal
           show = {chooseLiftsModal} />
     </div>
   )
 }
 
-export default ChooseYourGymsPane;
+export default YourLiftsPane;

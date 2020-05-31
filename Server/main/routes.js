@@ -211,10 +211,33 @@ addNewPr = async (req, res) => {
 	let user = await pool.query(queries.selectOneUserByUUID, [uuid])
 	const { exercise_id } = getExercise.rows[0]
 	const { user_id } = user.rows[0]
+	console.log(user_id, uuid, exercise_id, reps, weight, ' check here')
 	let newPr = await pool.query(queries.addNewPr, [user_id, uuid, exercise_id, reps, weight])
-	console.log(exercise.rows)
-	console.log(user.rows)
-	console.log(newPr.rows, ' yea')
+	console.log(newPr.rows, ' rowssss')
+	return res.send(newPr.rows)
+}
+
+getUserPrs = async (req, res) => {
+	console.log(req.user)
+	const { uuid } = req.user
+	let formatted = {}
+	let getExercises = await pool.query(queries.getUserPrs, [uuid])
+  let filteredRows = getExercises.rows.filter(row => {
+		if (row.exercise_name === row.exercise_type) {
+			return row
+		}
+	})
+	for (let i=0; i < filteredRows.length; i++){
+		if (formatted[`${filteredRows[i].exercise_name}`]) { formatted[`${filteredRows[i].exercise_name}`].push(filteredRows[i]) }
+		else { formatted[`${filteredRows[i].exercise_name}`] = [filteredRows[i]] }
+	}
+	const final = []
+	Object.keys(formatted).forEach(key => {
+		let obj = {}
+		obj[`${key}`] = formatted[key]
+		final.push(obj)
+	});
+	return res.send(final)
 }
 
 router.post('/addGymMember', checkToken, addGymMember)
@@ -242,5 +265,7 @@ router.get('/getLiftTypes', getLiftTypes)
 router.get('/getExercisesFromType', getExercisesFromType)
 
 router.post('/addNewPr', checkToken, addNewPr)
+
+router.get('/getUserPrs', checkToken, getUserPrs)
 
 module.exports = router

@@ -3,7 +3,7 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { showModalChooseLift } from '../../../actions';
+import { showModalChooseLift, newPrAdded } from '../../../actions';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
@@ -67,7 +67,11 @@ function YourLiftsModal(props) {
     let exercises = await axios.post('/addNewPr', {
       PR: PR
     })
-    
+    console.log(exercises.data, ' this is data')
+    if (exercises.data.length !== 0) {
+      dispatch(newPrAdded(true))
+      close()
+    }
   }
   
   return (

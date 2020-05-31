@@ -33,7 +33,7 @@ function ChooseYourGymsPane() {
   }
 
   return (
-    <div id = "chooseGymsContainer">
+    <div id = "paneContainer">
       <div id = "chooseGymsHeader">
         <p style={{
           margin: '0',
