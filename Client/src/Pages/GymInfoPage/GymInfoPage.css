@@ -1,0 +1,7 @@
+#gymInfo {
+  display: flex;
+  border: 1px solid black;
+  flex-direction: column;
+  margin: 5% 3% 3% 3%;
+  height: 1000px;
+}

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { showModalChooseGym } from '../../../actions';
-import { makeModalCards } from '../../helpers';
+import { makeModalCards, makeModalCardsFromDb } from '../../helpers';
 import axios from 'axios';
 
 function ChooseGymModal(props) {
@@ -12,7 +12,7 @@ function ChooseGymModal(props) {
   const [cards, setCards] = useState([])
   const userCoords = useSelector(state => state.currentLocationInfo.coords)
   const dispatch = useDispatch()
-
+  
   const handleChange = e => {
     console.log(e.target.value)
     setGym(e.target.value)
@@ -21,10 +21,17 @@ function ChooseGymModal(props) {
   const handleSubmit = async event => {
     if (event) event.preventDefault()
     if (gym.length === 0) return
-    let nearby = await axios.post('/searchByText', {
-      input: gym
+    // let nearby = await axios.post('/fuzzySearch', {
+    //   gym_name: gym
+    // })
+    // console.log(nearby.data, ' this is nearby')
+    let search = await axios.get('/searchByText', {
+      params: {
+        gym_name: gym
+      }
     })
-    setResults(nearby.data)
+    setResults(search.data)
+    // setResults(nearby.data)
   }
 
   const close = () => {

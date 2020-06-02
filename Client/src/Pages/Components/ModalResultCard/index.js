@@ -6,6 +6,7 @@ import reviews from './images/reviews.png';
 import './ModalResultCard.css';
 
 function ModalResultCard(props) {
+  console.log(props)
   const dispatch = useDispatch()
   return (
     <Card 
@@ -28,11 +29,20 @@ function ModalResultCard(props) {
             </div>
           </div>
           <div id = "modalAddress">
-            {props.address[0]}
-            <br/>
-            {props.address[1]}, {props.address[2]}
-            <br />
-            {props.address[3]}
+            {!props.fromDb
+            ? <> 
+                {props.address[0]}
+                <br/>
+                {props.address[1]}, {props.address[2]}
+                <br/>
+                {props.address[3]}
+              </>
+            : <>
+              {props.address[0]}
+              <br/>
+              {props.address[1]}
+              </>
+            } 
           </div>
         </div>
       </div>

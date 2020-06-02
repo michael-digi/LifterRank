@@ -16,7 +16,6 @@ export default (state = INITIAL_STATE, action) => {
     case SET_CARD_ARRAY:
       return {...state, cards: action.payload}
       case SET_MARKERS:
-        console.log(action.payload, 'markers')
         return {...state, markers: action.payload}
     default:
       return state;

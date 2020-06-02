@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios'
 import { Card, Button } from 'react-bootstrap';
 import reviews from './images/reviews.png';
 import './ResultCard.css';
@@ -8,8 +9,22 @@ function ResultCard(props) {
   if (props.members) memberships = props.members
   else memberships = 168
   
+  const getDetails = async () => {
+    const response = await axios.get('/getGymOverview', {
+      params: {
+        gym_name: props.name,
+        lat: props.coords.lat,
+        lng: props.coords.lng,
+        place_id: props.id,
+        img: props.img,
+        ratings_total: props.ratingsTotal,
+      }
+    })
+    console.log(response.data)
+  }
+  
   return (
-    <Card className="resultCard">
+    <Card className="resultCard" onClick={() => getDetails()}>
       <div id = "resultCardBody">
         <div id = "resultCardImage">
         <img src = {props.img}  alt = "gym profile" style={{width: '100%', height: '100%'}}/>

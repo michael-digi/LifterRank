@@ -11,9 +11,8 @@ function ExerciseCard(props) {
   
   useEffect(() => {
     let response = makeExerciseRows(props.prArray)
-    console.log(response, ' check here')
     setRows(response)
-  }, [newPr])
+  }, [props])
   
   
   return (
@@ -21,9 +20,6 @@ function ExerciseCard(props) {
       <div id = "exerciseCardHeader">
         <div id="exerciseName"> {props.exerciseName} </div>
         <div id="exerciseButtonContainer">
-          <Button className='editExerciseButton'>
-            Add Max
-          </Button >
           <Button className='editExerciseButton'>
             Show Variations
           </Button>

@@ -3,13 +3,13 @@ import { useSelector } from 'react-redux';
 import './ExerciseCardRow.css';
 
 function ExerciseCardRow(props) {
-  const [prProps, setPrProps] = useState({})
-  const newPr = useSelector(state => state.liftsModal.newPr)
+  const [prProps, setPrProps] = useState(props)
+  
 
   useEffect(() => {
     console.log(props, ' this is props here')
     setPrProps(props)
-  }, [newPr])
+  }, [props])
 
   return (
     <div id = 'row'> 

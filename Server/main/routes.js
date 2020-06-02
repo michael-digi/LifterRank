@@ -22,38 +22,22 @@ searchNearby = async (req, res, next) => {
 			location: lat + ',' + lng
 		}
 	})  
-	console.log(response.data.results)
 	return res.send(response.data.results)
 }
 
 
 searchByText = async (req, res, next) => {
-	console.log(req.body)
+	console.log('endpoint hit, for search')
 	let search = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
 		params: {
 			key: process.env.GOOGLE,
-			query: req.body.input,
+			query: req.query.gym_name,
 			type: 'gym'
 		}
 	})
-	console.log(search.data)
+	console.log(search.data.results, ' this is results')
 	return res.send(search.data.results)
 }
-
-// findPlaceFromText = async (req, res, next) => {
-// 	console.log(req.body)
-// 	let search = await axios.get('https://maps.googleapis.com/maps/api/place/findplacefromtext/json', {
-// 		params: {
-// 			key: process.env.GOOGLE,
-// 			input: req.body.input,
-// 			inputtype: 'textquery',
-// 			fields: 'formatted_address,name,geometry,photos,place_id,types,user_ratings_total,rating',
-// 			type: 'powerlifting gym'
-// 		}
-// 	})
-// 	console.log(search.data.candidates)
-// 	return res.send(search.data.candidates)
-// }
 
 authenticateUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -154,6 +138,7 @@ getUsersGymMemberships = async (req, res) => {
 }
 
 addGymMember = async (req, res) => {
+	console.log('add')
 	let { place_id, gym_name } = req.body.gymData
 	let { uuid } = req.user
 	
@@ -162,17 +147,32 @@ addGymMember = async (req, res) => {
 		console.log(gym_member_check.rows[0], ' youre already a member here')
 		return
 	}
-	
 	let gym = await pool.query(queries.selectOneGym, [place_id])
 	if (gym.rowCount === 0) {
 		let { place_id, gym_name, coords, ratingsTotal, img } = req.body.gymData
+		let { lat, lng } = coords
 		
-		const insertGym = await pool.query(queries.insertNewGym, [place_id, gym_name, 1, coords.lat, coords.lng, ratingsTotal, img])
+		const yelp = await getGymYelp(place_id, gym_name, lat, lng, img)
+		const { id, image_url, phone, display_phone, location, photos, hours } = yelp
+
+		const insertGym = await pool.query(queries.insertNewGym, 
+			[ place_id, id, gym_name, location.display_address[0], location.display_address[1], 1,
+				ratingsTotal, lat, lng, phone, display_phone, photos[0], photos[1], photos[2],
+				img, image_url])
+		
+		if (insertGym.rowCount === 1) {
+			try{
+				processHours(place_id, id, gym_name, hours[0].open)
+			}
+			catch {
+				console.log('no hours')
+			}
+		}
 		
 		let user = await pool.query(queries.selectOneUserByUUID, [uuid])
 		let { user_id, user_uuid } = user.rows[0]
 		
-		const insertNewMember = await pool.query(queries.insertNewMember, [place_id, gym_name, user_id, user_uuid])
+		const insertNewMember = await pool.query(queries.insertNewMember, [place_id, id, gym_name, user_id, user_uuid])
 		return res.send(insertNewMember.rows[0])
 	}
 	else {
@@ -180,8 +180,8 @@ addGymMember = async (req, res) => {
 
 		const user = await pool.query(queries.selectOneUserByUUID, [uuid])
 		let { user_id, user_uuid } = user.rows[0]
-		
-		const insertNewMember = await pool.query(queries.insertNewMember, [place_id, gym_name, user_id, user_uuid])
+		let { place_id2 } = gym.rows[0]
+		const insertNewMember = await pool.query(queries.insertNewMember, [place_id, place_id2, gym_name, user_id, user_uuid])
 		return res.send(insertNewMember.rows[0])
 	}
 }
@@ -195,9 +195,7 @@ getLiftTypes = async (req, res) => {
 }
 
 getExercisesFromType = async (req, res) => {
-	console.log(req.query)
 	let exercises = await pool.query(queries.getExercisesFromType, [req.query.exercise])
-	console.log(exercises.rows)
 	let response = exercises.rows.map(exercise => {
 		return exercise.exercise_name
 	})
@@ -211,14 +209,11 @@ addNewPr = async (req, res) => {
 	let user = await pool.query(queries.selectOneUserByUUID, [uuid])
 	const { exercise_id } = getExercise.rows[0]
 	const { user_id } = user.rows[0]
-	console.log(user_id, uuid, exercise_id, reps, weight, ' check here')
 	let newPr = await pool.query(queries.addNewPr, [user_id, uuid, exercise_id, reps, weight])
-	console.log(newPr.rows, ' rowssss')
 	return res.send(newPr.rows)
 }
 
 getUserPrs = async (req, res) => {
-	console.log(req.user)
 	const { uuid } = req.user
 	let formatted = {}
 	let getExercises = await pool.query(queries.getUserPrs, [uuid])
@@ -240,11 +235,100 @@ getUserPrs = async (req, res) => {
 	return res.send(final)
 }
 
+getGymGoogle = async (place_id, gym_name, lat, lng, img) => {
+	
+  console.log(gym_name, place_id, lat, lng)
+  let response = await axios.get('https://maps.googleapis.com/maps/api/place/details/json', {
+    params: {
+			key: process.env.GOOGLE,
+			place_id: place_id
+    }
+	})
+	console.log(response.data.result.opening_hours.periods, ' this is responsedataa')
+}
+
+getGymYelp = async (place_id, gym_name, lat, lng, img) => {
+	console.log('first query')
+  let response = await axios.get('https://api.yelp.com/v3/businesses/search', {
+    headers: {
+      'Authorization': `Bearer ${process.env.YELP}`
+    },
+    params: {
+      term: gym_name,
+      latitude: lat,
+			longitude: lng,
+			limit: 1
+    }
+	})
+	//Detail info, hours, three images 
+	console.log('second query')
+	let id = response.data.businesses[0].id
+  let details = await axios.get(`https://api.yelp.com/v3/businesses/${id}`, {
+    headers: {
+      'Authorization': `Bearer ${process.env.YELP}`
+    }
+	})
+	console.log('second query over')
+	return details.data
+}
+
+getGymOverview = async (req, res) => {
+	console.log('start of overview')
+	let { place_id, gym_name, lat, lng, img, ratings_total, addressOne, country, city, state } = req.query
+	let gym = await pool.query(queries.selectOneGym, [place_id])
+	if (gym.rowCount === 1) {
+		console.log('database hit')
+		return res.send(gym.rows[0])
+	}
+	else {
+		console.log('start yelp')
+		let yelp = await getGymYelp(place_id, gym_name, lat, lng, img, addressOne, country, city, state)
+		console.log('returned yelp')
+		let { id, image_url, phone, display_phone, location, photos, hours } = yelp
+		console.log('start insert')
+		const insertGym = await pool.query(queries.insertNewGym, 
+			[ place_id, id, gym_name, location.display_address[0], location.display_address[1], 1,
+				ratings_total, lat, lng, phone, display_phone, photos[0], photos[1], photos[2],
+				img, image_url])
+		console.log('end insert')
+		if(insertGym.rowCount === 1) processHours(place_id, id, gym_name, hours[0].open)
+
+		console.log('this is insertGym, database not hit')
+		return res.send(insertGym.rows[0])
+	}
+}
+
+processHours = (place_id, place_id2, gym_name, hours) => {
+	console.log(hours, gym_name)
+		hours.map(time => {
+			try {
+				const { start, end, day } = time
+			  pool.query(queries.insertHoursRow, [place_id, place_id2, gym_name, day, start, end])
+			}
+			catch {
+				console.log('error inserting hours')
+			}
+		})
+}
+
+fuzzySearch =  async (req, res) => {
+	console.log(req.query)
+	const { gym_name } = req.query;
+	let response = await pool.query(queries.fuzzyDatabaseGymSearch, [gym_name])
+	console.log(response.rows)
+	return res.send(response.rows)
+}
+
+
+// (place_id, place_id2, gym_name, membership_count, 
+// 	review_count, lat, lng, phone, display_phone, image_1, image_2, image_3,
+// 	photo_url, photo_url2, partial_info, full_info, inserted_on)
+
 router.post('/addGymMember', checkToken, addGymMember)
 	
 router.get('/search_nearby', searchNearby);
 
-router.post('/searchByText', searchByText)
+router.get('/searchByText', searchByText)
 
 router.post('/signUp', registerUser);
 
@@ -267,5 +351,11 @@ router.get('/getExercisesFromType', getExercisesFromType)
 router.post('/addNewPr', checkToken, addNewPr)
 
 router.get('/getUserPrs', checkToken, getUserPrs)
+
+router.get('/getGymGoogle', getGymGoogle)
+
+router.get('/getGymOverview', getGymOverview)
+
+router.get('/fuzzySearch', fuzzySearch)
 
 module.exports = router

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 import './LoginButton.css'
 
 function LoginButton() {
   return (
-    <Nav.Link href="/login">
+    <NavLink to="/login" id='loginButton'>
       Login
-    </Nav.Link>  
+    </NavLink>  
   )
 }
 

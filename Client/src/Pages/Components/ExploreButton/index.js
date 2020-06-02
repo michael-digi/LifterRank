@@ -1,13 +1,13 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
-
+import { NavLink } from 'react-router-dom';
 import './ExploreButton.css'
 
 function ExploreButton() {
   return (
-    <Nav.Link href="/results" id = 'exploreButton'>
+    <NavLink to="/results" id = 'exploreButton'>
       Explore
-    </Nav.Link>  
+    </NavLink>  
   )
 }
 

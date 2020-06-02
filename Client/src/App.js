@@ -3,6 +3,7 @@ import LandingPage from './Pages/LandingPage';
 import ResultsPage from './Pages/ResultsPage';
 import Login from './Pages/LoginPage';
 import SignUp from './Pages/SignUpPage';
+import GymInfoPage from './Pages/GymInfoPage';
 import axios from 'axios'
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import DashboardPage from './Pages/DashboardPage';
@@ -38,6 +39,7 @@ function App() {
 				<Route path = "/" exact component = {LandingPage} />
 				<Route path = "/home" exact component = {LandingPage} />
 				<Route path = "/results" exact component = {ResultsPage} />
+				<Route path = "/gyminfo" exact component = {GymInfoPage} />
         <AuthRoute path = "/login" exact component = {Login} />
 				<AuthRoute path = "/signup" exact component = {SignUp} />
 				<ProtectedRoute path = "/dashboard" component = {DashboardPage}/>

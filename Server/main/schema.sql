@@ -16,18 +16,38 @@ CREATE TABLE users(
 
 CREATE TABLE gyms(
   place_id VARCHAR(255) PRIMARY KEY,
+  place_id2 VARCHAR (255),
   gym_name VARCHAR(255) NOT NULL,
+  address_1 TEXT,
+  address_2 TEXT,
   membership_count INTEGER,
   review_score DOUBLE PRECISION,
   review_count INTEGER,
-  coordinates POINT NOT NULL,
+  lat FLOAT NOT NULL,
+  lng FLOAT NOT NULL,
+  phone TEXT UNIQUE,
+  display_phone TEXT, 
+  image_1 TEXT,
+  image_2 TEXT,
+  image_3 TEXT,
   photo_url TEXT,
+  photo_url2 TEXT,
   powerlifting BOOLEAN,
   weightlifting BOOLEAN,
   strongman BOOLEAN,
   bodybuilding BOOLEAN,
   inserted_on TIMESTAMP NOT NULL
 );
+
+CREATE TABLE gym_hours(
+  place_id VARCHAR(255),
+  place_id2 VARCHAR(255),
+  gym_name VARCHAR(255),
+  day_of_the_week INT NOT NULL,
+  opening TIME,
+  closing TIME,
+  PRIMARY KEY(place_id, day_of_the_week, opening, closing)
+)
 
 CREATE TABLE exercises(
   exercise_id serial PRIMARY KEY,
@@ -47,6 +67,7 @@ CREATE TABLE gym_members(
   user_id INTEGER NOT NULL,
   user_uuid UUID NOT NULL,
   place_id VARCHAR(255) NOT NULL,
+  place_id2 VARCHAR(255) NOT NULL,
   gym_name VARCHAR(255) NOT NULL,
   join_date DATE,
   PRIMARY KEY(user_id, place_id)

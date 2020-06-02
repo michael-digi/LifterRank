@@ -4,7 +4,7 @@ import ResultSection from '../Components/ResultSection';
 import Map from '../Components/Map';
 import { searchNearby, usePosition } from '../helpers';
 import { useDispatch } from "react-redux";
-import { setCurrentUserLocation, setGymInfo } from '../../actions';
+import { setCurrentUserLocation, setGymInfo, setCardArray } from '../../actions';
 import _ from 'lodash';
 import './ResultsPage.css';
 
@@ -15,6 +15,9 @@ function ResultsPage() {
   useEffect(() => {
     if (position.coords == null) return 
     dispatch(setCurrentUserLocation(position.coords))
+    return function cleanup() {
+      dispatch(setCurrentUserLocation({}))
+    }
   }, [position, dispatch])
 
   useEffect(() => {
@@ -37,6 +40,11 @@ function ResultsPage() {
             ), JSON.stringify(result))
           dispatch(setGymInfo(result))
         }, [position, dispatch])
+    }
+    return function cleanup() {
+      dispatch(setGymInfo([]))
+      dispatch(setCardArray([]))
+      console.log('unmounted')
     }
   })
 

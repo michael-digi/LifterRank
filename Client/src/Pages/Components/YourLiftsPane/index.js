@@ -19,7 +19,6 @@ function YourLiftsPane() {
     async function getUsersPrs() {
       let response = await axios.get('/getUserPrs')
       let cards = makeExerciseCard(response.data)
-      console.log(cards, ' cards')
       setCards(cards)
     }
     getUsersPrs()
