@@ -1,5 +1,46 @@
 #gymInfoHeader {
+  display: flex;
+  justify-content: center;
   width: 100%;
-  height: 100px;
+}
+
+#headerContainer {
+  width: 70%;
+  flex-direction: column;
+  margin-left: 15%;
+}
+
+#gymNameContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+#gymNameContainer h1 {
+  margin: 0px;
+  font-size: 3rem;
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+
+#reviews {
+  display: flex;
+  width: 100%;
+  margin-top: .5%;
+}
+
+#reviews h3 {
+  margin: 0px 0px 0px 3%;
+  font-size: 1.3rem;
+}
+
+.gymNameButton {
+  background-color: white;
   border: 1px solid black;
+  color: black;
+  margin-left: 8%;
+  width: 22.5%;
+  max-width: 150px;
+  min-height: 50px;
+  font-size: 1.2rem;
 }

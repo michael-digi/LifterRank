@@ -36,10 +36,10 @@ function App() {
 	return (
     <BrowserRouter>
 			<Switch>
-				<Route path = "/" exact component = {LandingPage} />
-				<Route path = "/home" exact component = {LandingPage} />
+				<AuthRoute path = "/" exact component = {LandingPage} />
+				<AuthRoute path = "/home" exact component = {LandingPage} />
 				<Route path = "/results" exact component = {ResultsPage} />
-				<Route path = "/gyminfo" exact component = {GymInfoPage} />
+				<Route path = "/gyminfo/:id" component = {GymInfoPage} />
         <AuthRoute path = "/login" exact component = {Login} />
 				<AuthRoute path = "/signup" exact component = {SignUp} />
 				<ProtectedRoute path = "/dashboard" component = {DashboardPage}/>

@@ -1,7 +1,7 @@
 # LifterRank
 
 The goal of this app is to provide a unified membership system for lifting clubs and gyms, with a different
-set of features if you're an owner or just a member. More details to come.
+set of features if you're an owner orgit  just a member. More details to come.
 
 ![Landing](LandingPageScreenShot.png)
 ![Results](ResultsScreenShot.png)

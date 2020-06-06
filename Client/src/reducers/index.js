@@ -5,6 +5,7 @@ import userReducer from './userReducer';
 import dashboardPaneReducer from './dashboardPaneReducer';
 import gymModalReducer from './gymModalReducer';
 import liftsModalReducer from './liftsModalReducer';
+import gymInfoPageReducer from './gymInfoPageReducer';
 
 export default combineReducers({
 	currentLocationInfo: userLocationReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
 	userInfo: userReducer,
 	dashboardPane: dashboardPaneReducer,
 	gymModal: gymModalReducer,
-	liftsModal: liftsModalReducer
+	liftsModal: liftsModalReducer,
+	gymPageInfo: gymInfoPageReducer
 })

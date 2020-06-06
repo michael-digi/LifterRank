@@ -139,7 +139,7 @@ getUsersGymMemberships = async (req, res) => {
 
 addGymMember = async (req, res) => {
 	console.log('add')
-	let { place_id, gym_name } = req.body.gymData
+	let { place_id, gym_name, ratingsTotal } = req.body.gymData
 	let { uuid } = req.user
 	
 	let gym_member_check = await pool.query(queries.checkIfMember, [place_id, uuid])
@@ -153,12 +153,12 @@ addGymMember = async (req, res) => {
 		let { lat, lng } = coords
 		
 		const yelp = await getGymYelp(place_id, gym_name, lat, lng, img)
-		const { id, image_url, phone, display_phone, location, photos, hours } = yelp
+		const { id, image_url, phone, display_phone, location, photos, hours} = yelp
 
 		const insertGym = await pool.query(queries.insertNewGym, 
 			[ place_id, id, gym_name, location.display_address[0], location.display_address[1], 1,
 				ratingsTotal, lat, lng, phone, display_phone, photos[0], photos[1], photos[2],
-				img, image_url])
+				img, image_url, location.city, location.state, location.ountry, location.zip_code])
 		
 		if (insertGym.rowCount === 1) {
 			try{
@@ -274,7 +274,7 @@ getGymYelp = async (place_id, gym_name, lat, lng, img) => {
 
 getGymOverview = async (req, res) => {
 	console.log('start of overview')
-	let { place_id, gym_name, lat, lng, img, ratings_total, addressOne, country, city, state } = req.query
+	let { place_id, gym_name, lat, lng, img, ratings_total } = req.query
 	let gym = await pool.query(queries.selectOneGym, [place_id])
 	if (gym.rowCount === 1) {
 		console.log('database hit')
@@ -282,14 +282,15 @@ getGymOverview = async (req, res) => {
 	}
 	else {
 		console.log('start yelp')
-		let yelp = await getGymYelp(place_id, gym_name, lat, lng, img, addressOne, country, city, state)
+		let yelp = await getGymYelp(place_id, gym_name, lat, lng, img)
 		console.log('returned yelp')
+		console.log(yelp, 'look here')
 		let { id, image_url, phone, display_phone, location, photos, hours } = yelp
 		console.log('start insert')
 		const insertGym = await pool.query(queries.insertNewGym, 
 			[ place_id, id, gym_name, location.display_address[0], location.display_address[1], 1,
 				ratings_total, lat, lng, phone, display_phone, photos[0], photos[1], photos[2],
-				img, image_url])
+				img, image_url, location.city, location.state, location.ountry, location.zip_code])
 		console.log('end insert')
 		if(insertGym.rowCount === 1) processHours(place_id, id, gym_name, hours[0].open)
 
@@ -317,6 +318,27 @@ fuzzySearch =  async (req, res) => {
 	let response = await pool.query(queries.fuzzyDatabaseGymSearch, [gym_name])
 	console.log(response.rows)
 	return res.send(response.rows)
+}
+
+gymPageOverview = async (req, res) => {
+	console.log('hit')
+	const gym = await pool.query(queries.selectOneGym, [req.query.place_id])
+	return res.send(gym.rows[0])
+}
+
+gymHours = async (req, res) => {
+	console.log(req.query.place_id)
+	const gymHours = await pool.query(queries.getHours, [req.query.place_id])
+	let days = {};
+	gymHours.rows.map(row => {
+		let opening = row.opening.split(':')
+		let closing = row.closing.split(':')
+		opening = opening[0] + ':' + opening[1]
+		closing = closing[0] + ':' + closing[1]
+		days[`${row.day_of_the_week}`] = {opening: opening, closing: closing}
+	})
+	console.log(days[`${0}`])
+	return res.send(days)
 }
 
 
@@ -357,5 +379,9 @@ router.get('/getGymGoogle', getGymGoogle)
 router.get('/getGymOverview', getGymOverview)
 
 router.get('/fuzzySearch', fuzzySearch)
+
+router.get('/gymPageOverview', gymPageOverview)
+
+router.get('/getGymHours', gymHours)
 
 module.exports = router

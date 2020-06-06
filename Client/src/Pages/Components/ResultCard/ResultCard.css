@@ -110,5 +110,12 @@
   50% { opacity: 1; }
 }
 
+#gymCardNavLink {
+  color: black;
+}
+
+#gymCardNavLink:hover {
+  text-decoration: none;
+}
 
 

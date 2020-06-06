@@ -13,7 +13,10 @@ import {
   SHOW_MODAL_CONFIRM_LIFT,
   SET_MODAL_LIFT_DATA, 
   NEW_GYM_ADDED,
-  NEW_PR_ADDED } from './types';
+  NEW_PR_ADDED,
+  SET_GYM_PAGE_INFO,
+  SET_CURRENT_NAV_CARD,
+  SET_GYM_PAGE_ID } from './types';
 
 export const setCurrentUserLocation = coords => {
   return {
@@ -117,5 +120,26 @@ export const newPrAdded = event => {
   return {
     type: NEW_PR_ADDED,
     payload: event
+  }
+}
+
+export const setGymPageInfo = info => {
+  return {
+    type: SET_GYM_PAGE_INFO,
+    payload: info
+  }
+}
+
+export const setGymPageId = id => {
+  return {
+    type: SET_GYM_PAGE_ID,
+    payload: id
+  }
+}
+
+export const setCurrentNavCard = card => {
+  return {
+    type: SET_CURRENT_NAV_CARD,
+    payload: card
   }
 }

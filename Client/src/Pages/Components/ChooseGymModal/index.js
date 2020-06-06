@@ -30,6 +30,7 @@ function ChooseGymModal(props) {
         gym_name: gym
       }
     })
+    console.log(search.data)
     setResults(search.data)
     // setResults(nearby.data)
   }
