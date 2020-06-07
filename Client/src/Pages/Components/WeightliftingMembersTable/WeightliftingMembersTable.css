@@ -1,0 +1,29 @@
+.header {
+  border-bottom: 1px solid gray;
+  padding-bottom: 1%;
+  text-align: center;
+  width: 4%;
+  font-size: 1.25rem;
+}
+
+.blankHeader {
+  width: 3%;
+  max-width: 125px;
+  text-align: center
+}
+
+.cell {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+#membersTableHeader {
+  width: 80%;
+  display: flex;
+  justify-self: flex-end;
+  border: 1px solid black;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+

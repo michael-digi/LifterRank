@@ -10,7 +10,7 @@ function GymPageNavCards(props) {
   let { path, url } = useRouteMatch()
   console.log(path, url)
 
-  const test = (e) => {
+  const switchCard = (e) => {
     dispatch(setCurrentNavCard(e))
   }
 
@@ -18,17 +18,17 @@ function GymPageNavCards(props) {
     <div id ='gymPageNavCards'>
       <div id='gymPageNavCardsContainer'>
        {currentNavCard === 'Overview' 
-         ? null : <NavLink className='gymPageNavCard' onClick={() => test('Overview')} to={`${url}/overview`}>Overview</NavLink>}
+         ? null : <NavLink className='gymPageNavCard' onClick={() => switchCard('Overview')} to={`${url}/overview`}>Overview</NavLink>}
        {currentNavCard === 'Members' 
-         ? null : <NavLink className='gymPageNavCard' onClick={() => test('Members')} to={`${url}/members`}>Members</NavLink>}
+         ? null : <NavLink className='gymPageNavCard' onClick={() => switchCard('Members')} to={`${url}/members`}>Members</NavLink>}
        {currentNavCard === 'Equipment' 
-         ? null : <NavLink className='gymPageNavCard' onClick={() => test('Equipment')} to={`${url}/equipment`}>Equipment</NavLink>}
+         ? null : <NavLink className='gymPageNavCard' onClick={() => switchCard('Equipment')} to={`${url}/equipment`}>Equipment</NavLink>}
        {currentNavCard === 'Events' 
-         ? null : <NavLink className='gymPageNavCard' onClick={() => test('Events')} to={`${url}/events`}>Events</NavLink>}
+         ? null : <NavLink className='gymPageNavCard' onClick={() => switchCard('Events')} to={`${url}/events`}>Events</NavLink>}
        {currentNavCard === 'Message' 
-         ? null : <NavLink className='gymPageNavCard' onClick={() => test('Message')} to={`${url}/message`}>Message</NavLink>}
+         ? null : <NavLink className='gymPageNavCard' onClick={() => switchCard('Message')} to={`${url}/message`}>Message</NavLink>}
        {currentNavCard === 'Live Stream' 
-         ? null : <NavLink className='gymPageNavCard' onClick={() => test('Live Stream')} to={`${url}/livestream`}>Live Stream</NavLink>}
+         ? null : <NavLink className='gymPageNavCard' onClick={() => switchCard('Live Stream')} to={`${url}/livestream`}>Live Stream</NavLink>}
       </div>
     </div>
   )

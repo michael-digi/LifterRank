@@ -3,6 +3,8 @@ import ResultCard from './Components/ResultCard';
 import ModalResultCard from './Components/ModalResultCard';
 import ExerciseCard from './Components/ExerciseCard';
 import ExerciseCardRow from './Components/ExerciseCardRow';
+import WeightliftingTableRow from './Components/WeightliftingTableRow';
+import PowerliftingTableRow from './Components/PowerliftingTableRow';
 import { Map, Marker } from 'google-maps-react';
 import axios from 'axios';
 import _ from 'lodash';
@@ -44,7 +46,7 @@ export const usePosition = () => {
 }
 
 
-export const makeCards = (gyms, coords) => {
+export const makeCards = (gyms = [], coords) => {
   let cards = []
   let photoUrl;
   let addressOne, city, state, country;
@@ -79,7 +81,7 @@ export const makeCards = (gyms, coords) => {
 
 
 
-export const makeDashboardCards = (gyms, coords) => {
+export const makeDashboardCards = (gyms = [], coords) => {
   let cards = []
   let photoUrl;
 
@@ -105,7 +107,7 @@ export const makeDashboardCards = (gyms, coords) => {
   return cards
 }
 
-export const makeExerciseCard = (exercises) => {
+export const makeExerciseCard = (exercises = []) => {
   let cards = []
   exercises.map(exercise => {
     let exerciseName = Object.keys(exercise)[0]
@@ -139,7 +141,7 @@ export const makeExerciseRows = (rows) => {
   return cards
 }
 
-export const makeModalCards = (gyms, coords) => {
+export const makeModalCards = (gyms = [], coords) => {
   console.log(gyms)
   let cards = []
   let photoUrl;
@@ -163,7 +165,7 @@ export const makeModalCards = (gyms, coords) => {
   return cards
 }
 
-export const makeModalCardsFromDb = (gyms, coords) => {
+export const makeModalCardsFromDb = (gyms = [], coords) => {
   console.log(gyms, ' this is gyms')
   let cards = []
   let photoUrl;
@@ -241,6 +243,39 @@ export const loadMap = (props = {}, styles = {}, markers = []) => {
           {markers}
       </Map>
      )
+}
+
+export const makeWeightliftingMemberRows = (rows = []) => {
+  let stats = [];
+  rows.map(row => {
+    stats.push(
+      <WeightliftingTableRow
+        email = {row.email}
+        first_name = {row.first_name}
+        last_name = {row.last_name}
+        snatch = {row.snatch}
+        clean_and_jerk = {row.clean_and_jerk}
+      />
+    )
+  })
+  return stats
+}
+
+export const makePowerliftingMemberRows = (rows = []) => {
+  let stats = [];
+  rows.map(row => {
+    stats.push(
+      <PowerliftingTableRow
+        email = {row.email}
+        first_name = {row.first_name}
+        last_name = {row.last_name}
+        squat = {row.squat}
+        bench = {row.bench}
+        deadlift = {row.deadlift}
+      />
+    )
+  })
+  return stats
 }
 
 export const createMarkers = (gyms, props) => {

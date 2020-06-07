@@ -1,0 +1,49 @@
+#gymMembers {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 925px;
+  margin-top: 2.5%;
+}
+
+#gymMembersHeader {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 30%;
+  justify-content: center;
+  align-self: flex-end;
+}
+
+#gymMembersHeader h1 {
+  display: inline-flex;
+  padding: .5% 2%;
+  border-bottom: 2px solid lightgray;
+  text-align: center;
+  margin: 0px
+}
+
+#gymMembersHeaderSection {
+  flex: .3;
+  display: flex;
+  justify-content: center;
+}
+
+#gymMembersHeaderSports {
+  display: flex;
+  flex: .7;
+  justify-content: center;
+}
+
+#sportsButtonContainer {
+  display: flex;
+  width: 85%;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.membersSportButton {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}

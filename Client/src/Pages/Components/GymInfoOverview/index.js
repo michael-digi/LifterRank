@@ -3,7 +3,7 @@ import GymInfoHours from '../GymInfoHours';
 import { useRouteMatch } from 'react-router-dom'
 import { StaticGoogleMap, Marker } from 'react-static-google-map';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentNavCard } from '../../../actions'
+import { setCurrentNavCard, setGymPageInfo } from '../../../actions'
 import phone from './images/phone.svg'
 import home from './images/homeicon.svg'
 import './GymInfoOverview.css';

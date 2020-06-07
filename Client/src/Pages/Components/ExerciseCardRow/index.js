@@ -5,7 +5,6 @@ import './ExerciseCardRow.css';
 function ExerciseCardRow(props) {
   const [prProps, setPrProps] = useState(props)
   
-
   useEffect(() => {
     console.log(props, ' this is props here')
     setPrProps(props)

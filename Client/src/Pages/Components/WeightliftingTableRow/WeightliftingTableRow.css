@@ -1,0 +1,21 @@
+.cell {
+  padding: 2.25% 0%;
+}
+
+.avatar {
+  max-width: 110px;
+}
+
+.avatarImg {
+  width: 65%;
+}
+
+.avatarName {
+  font-weight: bold;
+  font-size: 1.15rem;
+  max-height: 1%;
+}
+
+#weightliftingRow {
+  border-bottom: 1px solid lightgray;
+}

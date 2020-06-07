@@ -32,6 +32,9 @@ function GymInfoPage(props) {
       dispatch(setGymPageInfo(gymInfo.data))
     }
     getPageOverview()
+    return function cleanup() {
+      dispatch(setGymPageInfo({}))
+    }
   }, [])
 
   return (

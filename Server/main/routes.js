@@ -341,6 +341,25 @@ gymHours = async (req, res) => {
 	return res.send(days)
 }
 
+weightliftingStats = async (req, res) => {
+	let place_id = req.query[`0`]
+	await pool.query(queries.dropWeightlifting)
+	await pool.query(queries.getSnatches, [place_id])
+	await pool.query(queries.getCnj, [place_id])
+	let lifts = await pool.query(queries.getSnAndCl)
+	return res.send(lifts.rows)
+}
+
+powerliftingStats = async (req, res) => {
+	let place_id = req.query[`0`]
+	await pool.query(queries.dropPowerlifting)
+	await pool.query(queries.getSquats, [place_id])
+	await pool.query(queries.getBench, [place_id])
+	await pool.query(queries.getDeadlift, [place_id])
+	let lifts = await pool.query(queries.getSBD)
+	return res.send(lifts.rows)
+}
+
 
 // (place_id, place_id2, gym_name, membership_count, 
 // 	review_count, lat, lng, phone, display_phone, image_1, image_2, image_3,
@@ -383,5 +402,9 @@ router.get('/fuzzySearch', fuzzySearch)
 router.get('/gymPageOverview', gymPageOverview)
 
 router.get('/getGymHours', gymHours)
+
+router.get('/getGymWeightliftingStats', weightliftingStats)
+
+router.get('/getGymPowerliftingStats', powerliftingStats)
 
 module.exports = router

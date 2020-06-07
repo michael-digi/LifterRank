@@ -16,7 +16,9 @@ import {
   NEW_PR_ADDED,
   SET_GYM_PAGE_INFO,
   SET_CURRENT_NAV_CARD,
-  SET_GYM_PAGE_ID } from './types';
+  SET_GYM_PAGE_ID,
+  SET_SPORT_MEMBERSHIP_TABLE,
+  SET_MEMBERSHIP_DATA } from './types';
 
 export const setCurrentUserLocation = coords => {
   return {
@@ -141,5 +143,19 @@ export const setCurrentNavCard = card => {
   return {
     type: SET_CURRENT_NAV_CARD,
     payload: card
+  }
+}
+
+export const setSportMembershipTable = sport => {
+  return {
+    type: SET_SPORT_MEMBERSHIP_TABLE,
+    payload: sport
+  }
+}
+
+export const setMembershipData = data => {
+  return {
+    type: SET_MEMBERSHIP_DATA,
+    payload: data
   }
 }
