@@ -344,7 +344,7 @@ gymHours = async (req, res) => {
 weightliftingStats = async (req, res) => {
 	let place_id = req.query[`0`]
 	await pool.query(queries.dropWeightlifting)
-	await pool.query(queries.getSnatches, [place_id])
+	let snatches = await pool.query(queries.getSnatches, [place_id])
 	await pool.query(queries.getCnj, [place_id])
 	let lifts = await pool.query(queries.getSnAndCl)
 	return res.send(lifts.rows)
