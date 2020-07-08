@@ -9,6 +9,8 @@ const INITIAL_STATE = {
   markers: []
 }
 
+//sets the info for what is nearby the user, saving the gym info, their representation as cards in an array, and also
+//a list of markers representing their location
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_NEARBY_GYM_INFO:

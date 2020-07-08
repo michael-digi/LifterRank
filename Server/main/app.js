@@ -5,7 +5,6 @@ const helmet = require('helmet')
 const logger = require('morgan');
 const indexRouter = require('./routes')
 const cors = require('cors');
-const { v4: uuidv4 } = require('uuid');
 
 app.use(helmet())
 app.use(cors({

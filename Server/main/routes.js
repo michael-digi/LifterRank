@@ -11,7 +11,9 @@ const { v4: uuidv4 } = require('uuid');
 const jwt = require("jsonwebtoken");
 const jwtExpirySeconds = 3000;
 
-searchNearby = async (req, res, next) => {
+//search near the user. lat lng is center with radius searched around this point. query is hardcoded to 'powerlifting gym'
+//as that seems to return closest to the places we're looking for
+searchNearby = async (req, res) => {
   const lat = req.query.lat, lng = req.query.lng;
   console.log(' endpoint hit')
 	let response = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
@@ -25,7 +27,8 @@ searchNearby = async (req, res, next) => {
 	return res.send(response.data.results)
 }
 
-
+//uses the google place's API with the query taken in from the user, with 'type' narrowed down to 'gym' so as to not
+//return other industries
 searchByText = async (req, res, next) => {
 	console.log('endpoint hit, for search')
 	let search = await axios.get('https://maps.googleapis.com/maps/api/place/textsearch/json', {
@@ -39,6 +42,10 @@ searchByText = async (req, res, next) => {
 	return res.send(search.data.results)
 }
 
+//for login, checks if their is both an email and password given, if not, send error message
+//if email and password given, but not user is found from db query, return error
+//if user exists, unhash the password in the db and compare it to the one given when attempting login
+//if incorrect, send error. if correct, send user info along to next route via next()
 authenticateUser = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) return res.send({ message: 'Invalid Login' })
@@ -55,7 +62,10 @@ authenticateUser = async (req, res, next) => {
 	}
 }
 
-changePassword = async (req, res) => {
+//grab user from db by uuid. compare the password in the db to the one given by the user
+//if they match, allow them to change their password to the new one they submitted
+//if not match, send back error
+changePassword = async (req) => {
 	const { uuid } = req.user
 	let user = await pool.query(queries.selectOneUserByUUID, [uuid])
 	const checkPassword = await bcrypt.compare(req.body.cur, user.rows[0].password)
@@ -65,13 +75,17 @@ changePassword = async (req, res) => {
 	}
 }
 
-changePersonalInfo = async (req, res) => {
+//update user with updated info submitted from the personal info section of their dashboard
+changePersonalInfo = async (req) => {
 	const { uuid } = req.user;
 	const { firstName, lastName, email, phone, bio } = req.body
 	console.table([uuid, firstName, lastName, email, phone, bio])
 	let update = await pool.query(queries.updatePersonalInfo, [firstName, lastName, email, phone, bio, uuid])
 }
 
+//creates a JWToken, the payload being a combo of their uuid and email, using the HS256 alogorithm, and expires in 10 mins, currently
+//respond with a cookie containing the token
+//send the uuid and email back
 createToken = async (req, res) => {
 	const { user } = req
 	if (!req.user) {
@@ -89,6 +103,8 @@ createToken = async (req, res) => {
 	res.status(200).send({ uuid: user.user_uuid, email: user.email });
 }
 
+//send back user info based on uuid but first make blank their password and user_id (obscuring the user_id currently
+//so as to not communicate how many users are in the db)
 selectUser = async (req, res) => {
 	const { uuid } = req.user
 	let user = await pool.query(queries.selectOneUserByUUID, [uuid])
@@ -97,11 +113,16 @@ selectUser = async (req, res) => {
 	return res.send(user.rows[0])
 }
 
+//send user as response
 sendUser = async (req, res) => {
 	const { user } = req
 	return res.send({ user: user})
 }
 
+//check if token is valid. First check the amount of sections separated by a period. There should be three: header, payload,
+//signature. we check this because a common attack is to strip the signature and change the algorithm.
+//use the built in JWToken package to verify using the token, secret, and algorithm.
+//catch the error of the token being expired if necessary and send as response
 checkToken = async (req, res, next) => {
 	const { token } = req.cookies
 	if (token.split('.').length !== 3) return res.send({ message: 'invalid token' })
@@ -117,6 +138,10 @@ checkToken = async (req, res, next) => {
 	}
 }
 
+//registering the user in the db, first check if the user already exists but checking if there is a response when searching
+//for that user. If not, hash their password, create a random uuidv4 string to represent their uuid, and insert them into the db.
+//this query is setup to return the row that was just inserted, so if nothing is returned, then that means there was an error.
+//if no error, send the recently created user back as response.
 registerUser = async (req, res, next) => {
 	let { email, password } = req.body
 	let user = await pool.query(queries.selectOneUserByEmail, [email])
@@ -131,12 +156,18 @@ registerUser = async (req, res, next) => {
 	return res.send(user.rows[0].user_uuid)
 }
 
+//grab all memberships the user has to different gyms
 getUsersGymMemberships = async (req, res) => {
 	let { uuid } = req.user
 	let memberships = await pool.query(queries.getUsersMemberships, [uuid])
 	return res.send(memberships.rows)
 }
 
+//this is triggered when a user tries to claim they are a member of a gym. first, check if they've already declared themselves
+//as a member and send this information as a response if they are. If a gym's info is not yet in the database at all (much
+//less if users have claimed memberships there), hit the yelp api and get info about the gym. insert all available info about
+//the gym into the db from the yelp response. If successful, also add the gym hours if applicable.
+//if the gym does exist, increment their member count by 1 (new members) and update the members table with this new relationship
 addGymMember = async (req, res) => {
 	console.log('add')
 	let { place_id, gym_name, ratingsTotal } = req.body.gymData
@@ -186,6 +217,7 @@ addGymMember = async (req, res) => {
 	}
 }
 
+//get different types of exercises for modal
 getLiftTypes = async (req, res) => {
 	const types = await pool.query(queries.getLiftTypes)
 	let response = types.rows.map(type => {
@@ -194,6 +226,7 @@ getLiftTypes = async (req, res) => {
 	return res.send(response)
 }
 
+//get different exercises once type is chosen
 getExercisesFromType = async (req, res) => {
 	let exercises = await pool.query(queries.getExercisesFromType, [req.query.exercise])
 	let response = exercises.rows.map(exercise => {
@@ -202,6 +235,9 @@ getExercisesFromType = async (req, res) => {
 	return res.send(response)
 }
 
+//extract uuid, reps, weight, exercises from request
+//get the user from the uuid, get the exercise by name
+//insert into the user PR's table using the uuid and exercise_id
 addNewPr = async (req, res) => {
 	const { uuid } = req.user
 	const { reps, weight, exercise } = req.body.PR
@@ -213,6 +249,10 @@ addNewPr = async (req, res) => {
 	return res.send(newPr.rows)
 }
 
+//this is a bit tricky; it's necessary to return a nested, convenient data stucture of all the user's lifts. This 
+//is also only returning the major competition lifts (not any variations, so Snatch will be returned but not Hang Snatch).
+//first find all the user's PR's in the table by using their uuid. then use 'filter' to only find those lifts where the
+//type equals the name (which is only the major comp lifts).
 getUserPrs = async (req, res) => {
 	const { uuid } = req.user
 	let formatted = {}
@@ -235,9 +275,9 @@ getUserPrs = async (req, res) => {
 	return res.send(final)
 }
 
+//get a gym's info via the google api
 getGymGoogle = async (place_id, gym_name, lat, lng, img) => {
-	
-  console.log(gym_name, place_id, lat, lng)
+	console.log(gym_name, place_id, lat, lng)
   let response = await axios.get('https://maps.googleapis.com/maps/api/place/details/json', {
     params: {
 			key: process.env.GOOGLE,
@@ -247,6 +287,8 @@ getGymGoogle = async (place_id, gym_name, lat, lng, img) => {
 	console.log(response.data.result.opening_hours.periods, ' this is responsedataa')
 }
 
+//get a gym's info via the yelp api, the first query being general info from the name, the second query being specific info
+//based on the place's yelp id
 getGymYelp = async (place_id, gym_name, lat, lng, img) => {
 	console.log('first query')
   let response = await axios.get('https://api.yelp.com/v3/businesses/search', {
@@ -272,6 +314,8 @@ getGymYelp = async (place_id, gym_name, lat, lng, img) => {
 	return details.data
 }
 
+//get gym overview for a gym's page. if the gym is in the db, send it. if not, need to hit the yelp endpoint and return
+//the info. insert this new info into the db, then send it.
 getGymOverview = async (req, res) => {
 	console.log('start of overview')
 	let { place_id, gym_name, lat, lng, img, ratings_total } = req.query
@@ -299,6 +343,7 @@ getGymOverview = async (req, res) => {
 	}
 }
 
+//process the hours from the yelp api
 processHours = (place_id, place_id2, gym_name, hours) => {
 	console.log(hours, gym_name)
 		hours.map(time => {
@@ -312,6 +357,7 @@ processHours = (place_id, place_id2, gym_name, hours) => {
 		})
 }
 
+//not yet implemented, essentially an autocomplete for the postgres db
 fuzzySearch =  async (req, res) => {
 	console.log(req.query)
 	const { gym_name } = req.query;
@@ -320,12 +366,14 @@ fuzzySearch =  async (req, res) => {
 	return res.send(response.rows)
 }
 
+//get gym overview from the db
 gymPageOverview = async (req, res) => {
 	console.log('hit')
 	const gym = await pool.query(queries.selectOneGym, [req.query.place_id])
 	return res.send(gym.rows[0])
 }
 
+//get hours from db and format them
 gymHours = async (req, res) => {
 	console.log(req.query.place_id)
 	const gymHours = await pool.query(queries.getHours, [req.query.place_id])
@@ -341,6 +389,7 @@ gymHours = async (req, res) => {
 	return res.send(days)
 }
 
+//this makes a weightlifting stats table in the DB on the fly, and first drops such a table if it exists
 weightliftingStats = async (req, res) => {
 	let place_id = req.query[`0`]
 	await pool.query(queries.dropWeightlifting)
@@ -350,6 +399,7 @@ weightliftingStats = async (req, res) => {
 	return res.send(lifts.rows)
 }
 
+//this makes a powerlifting stats table in the DB on the fly, and first drops such a table if it exists
 powerliftingStats = async (req, res) => {
 	let place_id = req.query[`0`]
 	await pool.query(queries.dropPowerlifting)
@@ -359,11 +409,6 @@ powerliftingStats = async (req, res) => {
 	let lifts = await pool.query(queries.getSBD)
 	return res.send(lifts.rows)
 }
-
-
-// (place_id, place_id2, gym_name, membership_count, 
-// 	review_count, lat, lng, phone, display_phone, image_1, image_2, image_3,
-// 	photo_url, photo_url2, partial_info, full_info, inserted_on)
 
 router.post('/addGymMember', checkToken, addGymMember)
 	

@@ -15,6 +15,10 @@ import { useDispatch } from 'react-redux';
 function App() {
 	const dispatch = useDispatch()
 	
+	//when the app loads, it checks if the user is currently logged in with a valid JWT an verified.
+	//if a token is in the cookie, it is extracted and verified on the '/verifyToken' endpoint
+	//if it is expired or a message is returned stating 'invalid token', the status of the user's token is set to false
+	//else, the user.uuid is extracted and dispatched to the store
 	useEffect(() => {
 		if (Cookies.get('token')) {
 			async function verifyToken() {

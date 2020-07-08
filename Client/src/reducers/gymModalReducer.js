@@ -12,6 +12,9 @@ const INITIAL_STATE = {
   newGym: false
 }
 
+//this reducer is concerned with toggling the visibility of the confirmGymModal and chooseGymModal, as well as the
+//accompanying data about the gym. NEW_GYM_ADDED is a toggle to simply tell if a new gym has just been added to the user's gyms,
+//which triggers a rerender, showing the gym now in the list
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SHOW_MODAL_CONFIRM_GYM:

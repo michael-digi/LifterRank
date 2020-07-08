@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   userMarker: []
 }
 
+//simply holds the information about the user's latitude and longitude and a marker depicting them on a map
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_CURRENT_USER_LOCATION:

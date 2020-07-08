@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   currentNavCard: ''
 }
 
+//this reducer saves the current gym info card selected (Members, Overview etc) as well as the gym's place_id and info
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_GYM_PAGE_INFO:

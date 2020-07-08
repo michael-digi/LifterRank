@@ -10,6 +10,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import haversine from 'haversine-distance'
 
+//nearby search using lat lng as a center and radius constant value set on backend
 export const searchNearby = async (lat, lng) => {
   let nearby = await axios.get('/search_nearby', {
     params: {
@@ -20,6 +21,8 @@ export const searchNearby = async (lat, lng) => {
   return nearby.data
 }
 
+//grab the user coords of current location
+//uses browser's navigation.geolocation
 export const usePosition = () => {
   const [position, setPosition] = useState({coords: null});
   const [error, setError] = useState(null);
@@ -45,7 +48,7 @@ export const usePosition = () => {
   return {...position, error};
 }
 
-
+//makes cards for the main result page, using ResultCard component and passing in each bit of data as a prop
 export const makeCards = (gyms = [], coords) => {
   let cards = []
   let photoUrl;
@@ -80,7 +83,7 @@ export const makeCards = (gyms = [], coords) => {
 }
 
 
-
+//makes cards for the user dashboard page, using ResultCard component and passing in each bit of data as a prop
 export const makeDashboardCards = (gyms = [], coords) => {
   let cards = []
   let photoUrl;
@@ -107,6 +110,7 @@ export const makeDashboardCards = (gyms = [], coords) => {
   return cards
 }
 
+//card for each section of user's best lifts dashboard
 export const makeExerciseCard = (exercises = []) => {
   let cards = []
   exercises.map(exercise => {
@@ -141,6 +145,7 @@ export const makeExerciseRows = (rows) => {
   return cards
 }
 
+//miniature cards that appear as previews when a user searches for a gym to add to "Your Gyms"
 export const makeModalCards = (gyms = [], coords) => {
   console.log(gyms)
   let cards = []
@@ -165,6 +170,7 @@ export const makeModalCards = (gyms = [], coords) => {
   return cards
 }
 
+//This will be used if the gym info is already in the db, making a call to the API not necessary
 export const makeModalCardsFromDb = (gyms = [], coords) => {
   console.log(gyms, ' this is gyms')
   let cards = []
@@ -218,6 +224,7 @@ export const unloadedMap = (props, styles) => {
      )
 }
 
+//load the google map after being given the appropriate gym location markers and props, such as the user's coords
 export const loadMap = (props = {}, styles = {}, markers = []) => {
   const containerStyle = { 
     width: '51%',
@@ -245,6 +252,7 @@ export const loadMap = (props = {}, styles = {}, markers = []) => {
      )
 }
 
+//the rows in the table for the Members section on a gym page, weightlifting specifically
 export const makeWeightliftingMemberRows = (rows = []) => {
   let stats = [];
   rows.map(row => {
@@ -261,6 +269,7 @@ export const makeWeightliftingMemberRows = (rows = []) => {
   return stats
 }
 
+//the rows in the table for the Members section on a gym page, powerlifting specifically
 export const makePowerliftingMemberRows = (rows = []) => {
   let stats = [];
   rows.map(row => {
@@ -278,6 +287,7 @@ export const makePowerliftingMemberRows = (rows = []) => {
   return stats
 }
 
+//markers for the gym locations
 export const createMarkers = (gyms, props) => {
   let newMarkers = [];
   gyms.slice(0, 10).map(place => {

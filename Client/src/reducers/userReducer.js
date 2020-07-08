@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   token: ''
 }
 
+//the user's data and the status of their token
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_USER_INFO:

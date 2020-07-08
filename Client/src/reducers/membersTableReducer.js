@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   sportData: []
 }
 
+//this reducer toggles which sport is visible in the members table, as well as the data from those members (their lifts)
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_SPORT_MEMBERSHIP_TABLE:

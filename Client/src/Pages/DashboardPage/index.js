@@ -12,6 +12,7 @@ import LogoutButton from '../Components/LogoutButton';
 import './DashboardPage.css';
 
 function DashboardPage() {
+  //which pane is currently selected is read in from the redux store
   let pane = useSelector(state => state.dashboardPane.pane)
   let position = usePosition()
   const dispatch = useDispatch()
@@ -21,6 +22,7 @@ function DashboardPage() {
     dispatch(setCurrentUserLocation(position.coords))
   }, [position, dispatch])
 
+  // conditional rendering used to dictate which pane is visible upon it being clicked
   return (
     <>
       <div id = "dashboardNav">
